@@ -1,0 +1,121 @@
+//variaveisDaBolinha
+
+let Xbolinha = 300;
+let Ybolinha = 200;
+let diamêtro = 20;
+let raio = diamêtro / 2;
+
+//variaveisRaqueteP1
+let xRaquete=10;
+let yRaquete=150;
+let RaqueteCm=5;
+let RaqueteAlt=90;
+
+
+                                                                   //variaveisRaqueteOP                  
+let xRaqueteOP=585;
+let yRaqueteOP=150; 
+let velocidadeYOP;
+
+let colidiu = false;
+
+let VelocidadeXBolinha = 4;
+let VelocidadeYBolinha = 4;
+
+let pontos=0
+let pontosOP=0
+
+function setup() {
+  createCanvas(600, 400);
+}
+
+function draw() {
+  background(20);
+  circle(Xbolinha, Ybolinha, diamêtro);
+  mostraBolinha();
+  movimentaBolinha();
+  
+  colisaoBorda();
+
+  moveRaquete(xRaquete,yRaquete);
+  verificaColisaoRaquete();
+  colisaoMinhaRaqueteBiblioteca();
+  MovimentaRaqueteOP();
+  MostraRaquete(xRaquete, yRaquete);
+  MostraRaqueteOP(xRaqueteOP, yRaqueteOP);
+  marcaPonto();
+  incluiPlacar()
+  
+  Xbolinha += VelocidadeXBolinha;
+  Ybolinha += VelocidadeYBolinha;
+}
+
+function verificaColisaoRaquete() {
+    if (Xbolinha - raio < xRaquete + RaqueteCm && Ybolinha - raio < yRaquete + RaqueteAlt && Ybolinha + raio > yRaquete) {
+        VelocidadeXBolinha *= -1;}
+}
+  function colisaoMinhaRaqueteBiblioteca(x,y) {
+    colidiu = collideRectCircle(xRaqueteOP, yRaqueteOP, RaqueteCm, RaqueteAlt, Xbolinha, Ybolinha, raio);
+    if (colidiu) {
+        VelocidadeXBolinha *= -1;
+    }
+}
+
+function mostraBolinha(){
+  circle(Xbolinha, Ybolinha, diamêtro); 
+}
+
+ function movimentaBolinha(){
+    Xbolinha += VelocidadeXBolinha;
+  Ybolinha += VelocidadeYBolinha;
+}
+
+function colisaoBorda(){
+  if (Xbolinha +raio > width || Xbolinha -raio< 0) {
+    VelocidadeXBolinha *= -1;
+  }
+  if (Ybolinha + raio> height || Ybolinha -raio< 0) {
+    VelocidadeYBolinha *= -1;
+  }
+}
+
+function MostraRaquete(){
+  rect( xRaquete, yRaquete,RaqueteCm,RaqueteAlt);
+}
+
+function MostraRaqueteOP(){
+  rect(xRaqueteOP,yRaqueteOP,RaqueteCm,RaqueteAlt);
+}
+
+function MovimentaRaqueteOP(){
+   velocidadeYOP=Ybolinha-yRaqueteOP-RaqueteCm / 2 -30;
+   yRaqueteOP+= velocidadeYOP
+}
+    
+function moveRaquete(){
+  if (keyIsDown(UP_ARROW)){    
+  yRaquete -=10; 
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    yRaquete +=10; 
+  }  
+}
+
+function incluiPlacar() {
+  fill(255);
+  text(pontos, 278, 26);
+  text(pontosOP, 321, 26);
+}
+
+function marcaPonto() {
+  
+  if (Xbolinha > 590){
+    pontos+= 1;
+  }
+  
+  if (Xbolinha < 10){
+    
+    pontosOP= 1;
+  
+  }
+}
